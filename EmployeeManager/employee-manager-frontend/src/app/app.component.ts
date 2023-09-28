@@ -9,6 +9,7 @@ import { HttpErrorResponse } from '@angular/common/http';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit{
+  title = ""
   public employees: Employee[] = [];
 
   constructor(private employeeService: EmployeeService) {}
