@@ -8,6 +8,8 @@ import com.gebczyk.employeemanager.exception.UserNotFoundException;
 import com.gebczyk.employeemanager.model.Employee;
 import com.gebczyk.employeemanager.repo.EmployeeRepo;
 
+import jakarta.transaction.Transactional;
+
 @Service
 public class EmployeeService {
     private final EmployeeRepo employeeRepo;
@@ -35,7 +37,8 @@ public class EmployeeService {
                 .orElseThrow(() -> new UserNotFoundException ("User by id " + id + " was not found"));
     }
 
+    @Transactional
     public void deleteEmployee(Long id) {
         employeeRepo.deleteEmployeeById(id);
-    }
+    }   
 }

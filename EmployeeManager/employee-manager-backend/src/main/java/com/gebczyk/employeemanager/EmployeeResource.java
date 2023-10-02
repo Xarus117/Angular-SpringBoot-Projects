@@ -41,7 +41,7 @@ public class EmployeeResource {
         return new ResponseEntity<>(newEmployee, HttpStatus.CREATED);
     }
 
-    @PutMapping("/add") 
+    @PutMapping("/update") 
     public ResponseEntity<Employee> updateEmployee(@RequestBody Employee employee) {
         Employee updateEmployee = employeeService.updateEmployee(employee);
         return new ResponseEntity<>(updateEmployee, HttpStatus.CREATED);
