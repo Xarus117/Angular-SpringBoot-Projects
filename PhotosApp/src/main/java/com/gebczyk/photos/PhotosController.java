@@ -1,35 +1,61 @@
 package com.gebczyk.photos;
-
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequestMapping("/photos")
 public class PhotosController {
-    private Collection<Photo> db = new ArrayList<>(); // Collection con la información de la DB
+    private Collection<Photo> db = new ArrayList<>();
 
-    public PhotosController() {
-        db.add(new Photo(1, "hello.jpg")); // Añadimos un valor a la DB
+      public PhotosController() {
+        Photo examplePhoto = new Photo();
+        examplePhoto.setId(1);
+        examplePhoto.setFileName("example.jpg");
+        db.add(examplePhoto);
     }
 
-    @GetMapping("/photos") // Listado de todas las fotos
-    public Collection<Photo> get() {
+    
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public Photo create(@RequestBody Photo photo) {
+        int randomId = (int) UUID.randomUUID().getMostSignificantBits();
+        photo.setId(randomId);
+        db.add(photo);
+        return photo;
+    }
+
+    @GetMapping("/{id}")
+    public Photo getById(@PathVariable int id) {
+        return db.stream()
+                .filter(photo -> photo.getId() == id)
+                .findFirst()
+                .orElse(null);
+    }
+
+    @GetMapping
+    public Collection<Photo> getAll() {
         return db;
     }
 
-    @GetMapping("/photos/{id}") // Buscar foto por ID
-    public Photo getPhotoById(@PathVariable String id) {
+    @PutMapping("/{id}")
+    public Photo update(@PathVariable int id, @RequestBody Photo updatedPhoto) {
         for (Photo photo : db) {
-            if (String.valueOf(photo.getId()).equals(id)) {
+            if (photo.getId() == id) {
+                // Update the existing photo with new data
+                photo.setFileName(updatedPhoto.getFileName());
                 return photo;
             }
         }
-    throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Photo not found"); // En el caso de no ser encontrada retorna un 404
+        return null; // Photo not found
+    }
 
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable int id) {
+        db.removeIf(photo -> photo.getId() == id);
     }
 }
