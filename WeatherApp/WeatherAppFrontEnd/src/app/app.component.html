@@ -1,25 +1,33 @@
-<div class="container d-flex align-items-center justify-content-center h-100">
-  <div class="row">
-    <div class="col-md-6">
-      <form [formGroup]="cityForm" (ngSubmit)="onSubmit()" class="form">
-        <div class="form-group">
-          <label for="cityName">City Name</label>
-          <input type="text" id="cityName" formControlName="cityName" class="form-control">
+<section class="vh-100 d-flex justify-content-center align-items-center">
+  <div class="container py-5 h-100">
+    <div class="row">
+      <div class="col-md-8 col-lg-6 col-xl-4">
+        <div class="card text-center border border-dark mb-3">
+          <div class="card-body p-4">
+            <h3 class="mb-4 pb-2 fw-normal">Weather Forecast
+            </h3>
+            <form [formGroup]="cityForm" (ngSubmit)="onSubmit()" class="form">
+              <div class="form-group">
+                <label for="cityName">City Name</label>
+                <input type="text" id="cityName" formControlName="cityName" class="form-control">
+              </div><br>
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+            <div class="card border-0 rounded">
+              <div class="card-body p-4">
+                <h4 class="mb-1 sfw-normal">{{weatherData.location.city}}</h4>
+                <p class="mb-2">Current temperature: <strong>{{ weatherData.current.temp_c }}°C</strong></p>
+                <p>Feels like: <strong>{{weatherData.current.feelslike_c}}°C</strong></p>
+                <div class="d-flex flex-row justify-content-center align-items-center">
+                  <img src="{{ weatherData.current.condition.icon }}" alt="Weather Icon">
+                  <p><strong>{{weatherData.current.condition.text}}</strong></p>
+                </div>
+                
+              </div>
+            </div>
+          </div>
         </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
-      </form>
-    </div>
-  </div>
-</div>
-
-<div class="container d-flex align-items-center justify-content-center h-100">
-  <div class="row" *ngIf="weatherData">
-    <div class="col-md-6">
-      <div class="weather-info">
-        <h1>Temperature {{ weatherData.current.temp_c }}</h1>
-        <h2>{{ weatherData.location.country }}</h2>
-        <h2>{{ weatherData.location.region }}</h2>
       </div>
     </div>
   </div>
-</div>
+</section>
