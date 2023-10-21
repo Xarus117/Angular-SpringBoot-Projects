@@ -21,7 +21,7 @@ public class WeatherController {
 
     @GetMapping("/weather")
     public String getWeather(@RequestParam String city) {
-        String apiUrl = "http://api.weatherapi.com/v1/current.json?key=" + apiKey + "&q=" + city;
+        String apiUrl = "http://api.weatherapi.com/v1/forecast.json?key=" + apiKey + "&q=" + city + "&days=15";
         String response = restTemplate.getForObject(apiUrl, String.class);
         return response;
     }

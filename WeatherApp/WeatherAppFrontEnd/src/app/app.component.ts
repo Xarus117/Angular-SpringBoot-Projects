@@ -11,7 +11,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class AppComponent implements OnInit {
   title = 'WeatherAppFrontEnd';
   cityForm: FormGroup;
-  weatherData: any | undefined;
+  weatherData: any  | undefined;
+  daysOfWeek: string[] = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
   constructor(private fb: FormBuilder, private weatherService: WeatherService) {
     this.cityForm = this.fb.group({
@@ -20,7 +21,6 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
-    // If you have any initialization logic for your component, you can place it here.
   }
 
   onSubmit() {
