@@ -11,8 +11,11 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class AppComponent implements OnInit {
   title = 'WeatherAppFrontEnd';
   cityForm: FormGroup;
+  selectedWeather: any;
   weatherData: any  | undefined;
-  daysOfWeek: string[] = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+  weatherDays: String[] = [];
+  DateCache: Date = new Date();
+  daysOfTheWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
 
   constructor(private fb: FormBuilder, private weatherService: WeatherService) {
     this.cityForm = this.fb.group({
@@ -23,6 +26,11 @@ export class AppComponent implements OnInit {
   ngOnInit() {
   }
 
+  openModal(weather: any) {
+    this.selectedWeather = weather;
+    console.log(this.selectedWeather)
+  }
+
   onSubmit() {
     const cityNameControl = this.cityForm.get('cityName');
     if (cityNameControl != null) {
@@ -30,15 +38,22 @@ export class AppComponent implements OnInit {
         const cityName = cityNameControl.value;
         this.weatherService.getWeather(cityName).subscribe(
           data => {
-            console.log("Weather Data: ", data);
             this.weatherData = data;
-            console.log(this.weatherData.current.temp_c);
+            console.log(this.weatherData)
+            this.dateOfTheWeek();
           },
           error => {
             console.log(error);
           }
         );
       }
+    }
+  }
+
+  dateOfTheWeek() {
+    for (let i = 0; i < this.weatherData.forecast.forecastday.length; i++) {
+    this.DateCache = new Date(this.weatherData.forecast.forecastday[i].date) 
+    this.weatherDays.push(this.daysOfTheWeek[this.DateCache.getDay()]);
     }
   }
 }
